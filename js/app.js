@@ -13,8 +13,19 @@ function agregarTarea() {
     }
     
     const li = document.createElement("li");
-    li.textContent=tarea;
+    const span = document.createElement("span");
     
+    span.textContent = tarea;
+    
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    
+    btnEliminar.addEventListener("click",() => {
+                                 li.remove();
+                                 });
+    
+    li.appendChild(span);
+    li.appendChild(btnEliminar);
     listaTareas.appendChild(li);
     txtTarea.value="";
 }
