@@ -111,11 +111,38 @@ function guardarTareas(){
 function cargarTareas(){
     const tareasGuardadas = localStorage.getItem("tareas");
     if(tareasGuardadas){
-        tareas = JSON.parse(
-            tareasGuardadas
-        );
+        tareas = JSON.parse(tareasGuardadas);
         renderizarTareas();
+    }
+    else{
+        cargarDesdeAPI();
+    }
+}
+cargarTareas();
+
+async function cargarDesdeAPI() {
+    try {
+        const respuesta = await fetch(
+            "https://jsonplaceholder.typicode.com/todos"
+        );
+        const datos = await respuesta.json();
+        for(let i = 0; i < 20; i++){
+            tareas.push({
+
+                id: datos[i].id,
+                titulo: datos[i].title,
+                completada: datos[i].completed
+            });
+        }
+        guardarTareas();
+        renderizarTareas();
+    }
+    catch(error) {
+    alert(
+        "No fue posible cargar las tareas desde la API."
+    );
+    console.error(error);
     }
 }
 
-cargarTareas();
+
