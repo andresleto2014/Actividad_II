@@ -22,7 +22,7 @@ function agregarTarea() {
     });
     
     renderizarTareas();
-
+    guardarTareas();
     txtTarea.value = "";
     
     /**
@@ -72,6 +72,7 @@ function completarTarea(id){
             break;
         }
     }
+    guardarTareas();
     renderizarTareas();
 }
 
@@ -80,6 +81,7 @@ function eliminarTarea(id){
     tareas = tareas.filter(function(tarea){
         return tarea.id != id;
     });
+    guardarTareas();
     renderizarTareas();
 }
 
@@ -98,3 +100,22 @@ function actualizarDashboard(){
     document.getElementById("pendientes").textContent = pendientes;
     document.getElementById("completadas").textContent = completadas;
 }
+
+function guardarTareas(){
+    localStorage.setItem(
+        "tareas",
+        JSON.stringify(tareas)
+    );
+}
+
+function cargarTareas(){
+    const tareasGuardadas = localStorage.getItem("tareas");
+    if(tareasGuardadas){
+        tareas = JSON.parse(
+            tareasGuardadas
+        );
+        renderizarTareas();
+    }
+}
+
+cargarTareas();
