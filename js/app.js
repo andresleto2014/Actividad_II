@@ -48,14 +48,53 @@ function renderizarTareas() {
 
     listaTareas.innerHTML = "";
 
-    tareas.forEach(tarea => {
-
+    for(let i = 0; i < tareas.length; i++) {
         const li = document.createElement("li");
+        li.innerHTML =
+            tareas[i].titulo +
+            ' <button onclick="completarTarea(' + tareas[i].id + ')">Completar</button>' +
+            ' <button onclick="eliminarTarea(' + tareas[i].id + ')">Eliminar</button>';
 
-        li.textContent = tarea.titulo;
-
+        if(tareas[i].completada){
+            li.style.textDecoration = "line-through";
+        }
         listaTareas.appendChild(li);
+    }
+    actualizarDashboard();
+}
 
+function completarTarea(id){
+
+    for(let i = 0; i < tareas.length; i++){
+        if(tareas[i].id == id){
+            tareas[i].completada =
+                !tareas[i].completada;
+            break;
+        }
+    }
+    renderizarTareas();
+}
+
+function eliminarTarea(id){
+
+    tareas = tareas.filter(function(tarea){
+        return tarea.id != id;
     });
+    renderizarTareas();
+}
 
+function actualizarDashboard(){
+    let pendientes = 0;
+    let completadas = 0;
+    for(let i = 0; i < tareas.length; i++){
+        if(tareas[i].completada){
+            completadas++;
+        }
+        else{
+            pendientes++;
+        }
+    }
+    document.getElementById("total").textContent = tareas.length;
+    document.getElementById("pendientes").textContent = pendientes;
+    document.getElementById("completadas").textContent = completadas;
 }
